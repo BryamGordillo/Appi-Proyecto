@@ -18,17 +18,21 @@ class ClienteService {
     }
 
     fun save (cliente: Cliente): Cliente {
-        if (cliente.cedula.equals("")) {
-            (cliente.nombre.equals(""))
-            (cliente.celular.equals(""))
+        try {
+            if (cliente.cedula.equals("") or  cliente.nombre.equals("") or cliente.celular.equals("")){
 
 
-            throw Exception()
+                throw Exception("campo vacio")
+            }
+            else
+            {
+                return clienteRepository.save(cliente)
+            }
         }
-        else
-        {
-            return clienteRepository.save(cliente)
+        catch (ex: Exception){
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message, ex)
         }
+
 
     }
 
@@ -38,18 +42,14 @@ class ClienteService {
     }
 
     fun updateDescription (cliente: Cliente): Cliente {
-        try{
             val response = clienteRepository.findById(cliente.id)
-                ?: throw Exception("El cliente${cliente.id} no a sido encontrado")
+                ?: throw Exception()
             response.apply {
                 this.cedula = cliente.cedula
                 this.nombre = cliente.nombre
                 this.celular = cliente.celular
-            }
+
             return clienteRepository.save(response)
-        }
-        catch (ex: Exception){
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message, ex)
         }
 
     }

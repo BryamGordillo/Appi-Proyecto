@@ -18,14 +18,21 @@ class TrajeService {
     }
 
     fun save (traje:Traje): Traje {
-        if (traje.descripcion.equals(""))
-        {
-            throw Exception()
+        try {
+            if (traje.descripcion.equals(""))
+            {
+                throw Exception("campo incompleto")
+            }
+            else
+            {
+                return trajeRepository.save(traje)
+            }
         }
-        else
-        {
-            return trajeRepository.save(traje)
+        catch (ex: Exception){
+            throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
+
         }
+
     }
 
     fun update(traje: Traje): Traje {
@@ -33,19 +40,14 @@ class TrajeService {
     }
 
     fun updateDescription (traje: Traje): Traje {
-        try {
+
             val response = trajeRepository.findById(traje.id)
-                ?: throw Exception("el traje ${traje.id} no existe")
+                ?: throw Exception()
             response.apply {
                 this.descripcion = traje.descripcion
             }
             return trajeRepository.save(response)
-        }
-        catch (ex: Exception){
-            throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
 
-
-        }
     }
 
     fun delete (id:Long): Boolean{
