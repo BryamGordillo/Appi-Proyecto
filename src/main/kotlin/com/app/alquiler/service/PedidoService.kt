@@ -36,7 +36,7 @@ class PedidoService {
                 ?: throw Exception("El traje${pedido.trajeId} no a sido encontrado")
 
             if (pedido.cantidad!! >0){
-                throw Exception("cantidad no a sido encontrado")
+                throw Exception("cantidad no ha sido encontrado")
             }
 
 
