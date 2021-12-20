@@ -35,13 +35,8 @@ class PedidoService {
             trajeRepository.findById(pedido.trajeId)
                 ?: throw Exception("El traje${pedido.trajeId} no a sido encontrado")
 
-            if (pedido.cantidad!! >0){
-                throw Exception("cantidad no ha sido encontrado")
-            }
-
-
-
-
+           // pedido.cantidad?.trim()?.isEmpty()
+                ?: throw Exception("Campo Vacio")
 
             return pedidoRepository.save(pedido)
         }

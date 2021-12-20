@@ -19,15 +19,17 @@ class ClienteService {
 
     fun save (cliente: Cliente): Cliente {
         try {
-            if (cliente.cedula.equals("") or  cliente.nombre.equals("") or cliente.celular.equals("")){
+            cliente.cedula?.trim()?.isEmpty()
+                ?: throw Exception("Campo Vacio")
 
+            cliente.nombre?.trim()?.isEmpty()
+                ?: throw Exception("Campo Vacio")
 
-                throw Exception("campo vacio")
-            }
-            else
-            {
-                return clienteRepository.save(cliente)
-            }
+            cliente.celular?.trim()?.isEmpty()
+                ?: throw Exception("Campo Vacio")
+
+            return clienteRepository.save(cliente)
+
         }
         catch (ex: Exception){
             throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message, ex)

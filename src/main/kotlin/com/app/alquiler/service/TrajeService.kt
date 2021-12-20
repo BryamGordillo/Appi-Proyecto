@@ -19,14 +19,12 @@ class TrajeService {
 
     fun save (traje:Traje): Traje {
         try {
-            if (traje.descripcion.equals(""))
-            {
-                throw Exception("campo incompleto")
-            }
-            else
-            {
-                return trajeRepository.save(traje)
-            }
+
+            traje.descripcion?.trim()?.isEmpty()
+                ?:throw java.lang.Exception("campo vacio")
+
+            return trajeRepository.save(traje)
+
         }
         catch (ex: Exception){
             throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
