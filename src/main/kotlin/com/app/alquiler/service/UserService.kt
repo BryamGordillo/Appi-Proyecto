@@ -1,9 +1,7 @@
 package com.app.alquiler.service
 
-import com.app.alquiler.model.Traje
 import com.app.alquiler.model.User
-import com.app.alquiler.respository.TrajeRepository
-import com.app.alquiler.respository.`User Repository`
+import com.app.alquiler.respository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -12,8 +10,7 @@ import org.springframework.web.server.ResponseStatusException
 @Service
 class UserService {
     @Autowired
-    lateinit var userRepository: `User Repository`
-
+    lateinit var userRepository: UserRepository
 
     fun list(): List<User> {
         return userRepository.findAll()
@@ -22,7 +19,7 @@ class UserService {
     fun getUser (username: String?): User {
         try {
             val response = userRepository.findByUsername(username)
-                ?:throw Exception("no existe Usuario")
+                ?:throw Exception("No Existe Usuario")
             return response
         }
         catch (ex: Exception){

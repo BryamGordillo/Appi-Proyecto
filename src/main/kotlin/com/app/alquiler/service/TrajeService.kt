@@ -20,7 +20,7 @@ class TrajeService {
     fun save (traje:Traje): Traje {
         try {
 
-            traje.descripcion?.trim()?.isEmpty()
+            traje.descripcion?.takeIf {it.trim().isNotEmpty()}
                 ?:throw java.lang.Exception("campo vacio")
 
             return trajeRepository.save(traje)

@@ -19,13 +19,13 @@ class ClienteService {
 
     fun save (cliente: Cliente): Cliente {
         try {
-            cliente.cedula?.trim()?.isEmpty()
+            cliente.cedula?.takeIf {it.trim().isNotEmpty()}
                 ?: throw Exception("Campo Vacio")
 
-            cliente.nombre?.trim()?.isEmpty()
+            cliente.nombre?.takeIf {it.trim().isNotEmpty()}
                 ?: throw Exception("Campo Vacio")
 
-            cliente.celular?.trim()?.isEmpty()
+            cliente.celular?.takeIf {it.trim().isNotEmpty()}
                 ?: throw Exception("Campo Vacio")
 
             return clienteRepository.save(cliente)

@@ -3,7 +3,7 @@ package com.app.alquiler.model
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
