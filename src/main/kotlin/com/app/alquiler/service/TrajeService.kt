@@ -12,32 +12,38 @@ class TrajeService {
     @Autowired
     lateinit var trajeRepository: TrajeRepository
 
-
     fun list(): List<Traje> {
         return trajeRepository.findAll()
     }
 
     fun save (traje:Traje): Traje {
         try {
-
             traje.descripcion?.takeIf {it.trim().isNotEmpty()}
-                ?:throw java.lang.Exception("campo vacio")
+                ?:throw java.lang.Exception("Campo DESCRIPCION Vacio")
 
             return trajeRepository.save(traje)
-
         }
         catch (ex: Exception){
             throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
-
         }
-
     }
 
     fun update(traje: Traje): Traje {
-        return trajeRepository.save(traje)
+        try {
+            traje.descripcion?.takeIf {it.trim().isNotEmpty()}
+                ?:throw java.lang.Exception("Campo DESCRIPCION Vacio")
+
+            return trajeRepository.save(traje)
+        }
+        catch (ex: Exception){
+            throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
+        }
     }
 
     fun updateDescription (traje: Traje): Traje {
+        try {
+            traje.descripcion?.takeIf {it.trim().isNotEmpty()}
+                ?:throw java.lang.Exception("Campo DESCRIPCION Vacio")
 
             val response = trajeRepository.findById(traje.id)
                 ?: throw Exception()
@@ -45,7 +51,10 @@ class TrajeService {
                 this.descripcion = traje.descripcion
             }
             return trajeRepository.save(response)
-
+        }
+        catch (ex: Exception){
+            throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
+        }
     }
 
     fun delete (id:Long): Boolean{

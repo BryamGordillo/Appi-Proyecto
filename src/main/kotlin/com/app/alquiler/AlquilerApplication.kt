@@ -8,4 +8,5 @@ class AlquilerApplication
 
 fun main(args: Array<String>) {
 	runApplication<AlquilerApplication>(*args)
+
 }
