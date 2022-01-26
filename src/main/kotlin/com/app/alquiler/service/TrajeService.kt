@@ -30,6 +30,8 @@ class TrajeService {
 
     fun update(traje: Traje): Traje {
         try {
+            val response = trajeRepository.findById(traje.id)
+                ?: throw Exception()
             traje.descripcion?.takeIf {it.trim().isNotEmpty()}
                 ?:throw java.lang.Exception("Campo DESCRIPCION Vacio")
 
@@ -69,4 +71,5 @@ class TrajeService {
         }
 
     }
+
 }

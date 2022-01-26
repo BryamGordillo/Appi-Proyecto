@@ -35,6 +35,8 @@ class ClienteService {
 
     fun update(cliente: Cliente): Cliente {
         try {
+            val response = clienteRepository.findById(cliente.id)
+                ?: throw Exception()
             cliente.cedula?.takeIf {it.trim().isNotEmpty()}
                 ?: throw Exception("Campo CEDULA Vacio")
 

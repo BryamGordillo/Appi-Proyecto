@@ -85,12 +85,37 @@ class PedidoServiceTest {
     }
 
     @Test
-    fun savePedidoFailedPedido() {
+    fun savePedidoFailedCantidad() {
         Assertions.assertThrows(Exception::class.java) {
             pedidoMock.apply { cantidad = 0 }
             Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(pedidoMock)
             pedidoService.save(pedidoMock)
         }
     }
+
+    @Test
+    fun updatedIdNotExitsFailed() {
+
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(pedidoRepository.findById(returnObject.id)).thenReturn(null)
+            Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
+            pedidoService.update(pedidoMock)
+
+        }
+    }
+
+    @Test
+    fun updateIsFailedCantidadIsNull() {
+        Assertions.assertThrows(Exception::class.java) {
+            pedidoMock.apply {
+                cantidad = 0
+            }
+            Mockito.`when`(pedidoRepository.findById(pedidoMock.id)).thenReturn(pedidoMock)
+            Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(pedidoMock)
+            pedidoService.update(pedidoMock)
+
+        }
+    }
+
 
 }

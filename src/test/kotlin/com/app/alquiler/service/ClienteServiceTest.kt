@@ -1,6 +1,7 @@
 package com.app.alquiler.service
 
 import com.app.alquiler.model.Cliente
+import com.app.alquiler.model.Pedido
 import com.app.alquiler.respository.ClienteRepository
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions
@@ -84,6 +85,67 @@ class ClienteServiceTest {
             clienteMock.apply { celular = "    " }
             Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
             clienteService.save(clienteMock)
+        }
+    }
+
+    @Test
+    fun updateIsIdClienteCorrect() {
+        Mockito.`when`(clienteRepository.findById(returnObject.id)).thenReturn(returnObject)
+        Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
+        val response = clienteService.save(clienteMock)
+        Assertions.assertEquals(response.id, clienteMock.id)
+        Assertions.assertEquals(response.cedula, clienteMock.cedula)
+        Assertions.assertEquals(response.nombre, clienteMock.nombre)
+        Assertions.assertEquals(response.celular, clienteMock.celular)
+    }
+
+    @Test
+    fun updatedIdNotExitsFailed() {
+
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(clienteRepository.findById(returnObject.id)).thenReturn(null)
+            Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
+            clienteService.update(clienteMock)
+
+        }
+    }
+
+    @Test
+    fun updateIsFailedCedulaIsNull() {
+        Assertions.assertThrows(Exception::class.java) {
+            clienteMock.apply {
+                cedula = " "
+            }
+            Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
+            Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+            clienteService.update(clienteMock)
+
+        }
+    }
+
+    @Test
+    fun updateIsFailedCelularIsNull() {
+        Assertions.assertThrows(Exception::class.java) {
+            clienteMock.apply {
+                celular = " "
+            }
+            Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
+            Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+            clienteService.update(clienteMock)
+
+        }
+    }
+
+    @Test
+    fun updateIsFailedNombreIsNull() {
+        Assertions.assertThrows(Exception::class.java) {
+            clienteMock.apply {
+                nombre = " "
+            }
+            Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
+            Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+            clienteService.update(clienteMock)
+
         }
     }
 }

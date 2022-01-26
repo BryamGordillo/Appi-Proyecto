@@ -1,5 +1,7 @@
 package com.app.alquiler.service
 
+import com.app.alquiler.model.Cliente
+import com.app.alquiler.model.Pedido
 import com.app.alquiler.model.Traje
 import com.app.alquiler.respository.TrajeRepository
 import com.google.gson.Gson
@@ -60,6 +62,30 @@ class TrajeServiceTest {
             trajeMock.apply { descripcion = "    " }
             Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(trajeMock)
             trajeService.save(trajeMock)
+        }
+    }
+
+    @Test
+    fun updatedIdNotExitsFailed() {
+
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(trajeRepository.findById(returnObject.id)).thenReturn(null)
+            Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
+            trajeService.update(trajeMock)
+
+        }
+    }
+
+    @Test
+    fun updateIsFailedDescripcionIsNull() {
+        Assertions.assertThrows(Exception::class.java) {
+            trajeMock.apply {
+                descripcion = " "
+            }
+            Mockito.`when`(trajeRepository.findById(trajeMock.id)).thenReturn(trajeMock)
+            Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(trajeMock)
+            trajeService.update(trajeMock)
+
         }
     }
 
