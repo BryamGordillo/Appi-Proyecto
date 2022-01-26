@@ -33,6 +33,7 @@ class PedidoService {
             trajeRepository.findById(pedido.trajeId)
                 ?: throw Exception("El traje${pedido.trajeId} no a sido encontrado")
 
+
             if(pedido.cantidad!! >0){
                 return pedidoRepository.save(pedido)
             }
@@ -86,8 +87,16 @@ class PedidoService {
         }
     }
 
-    fun delete (id:Long): Boolean{
-        pedidoRepository.deleteById(id)
-        return true
+    fun delete (id :Long?): Boolean{
+        try{
+            pedidoRepository.findById(id)
+                ?: throw Exception ("id no existe")
+            pedidoRepository.deleteById(id!!)
+            return true
+
+        }catch (ex:Exception){
+            throw Exception()
+        }
+
     }
 }

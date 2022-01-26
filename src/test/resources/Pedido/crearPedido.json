@@ -1,4 +1,6 @@
 {
   "id": 1,
-  "cantidad":1
+  "cantidad":1,
+  "trajeId": 1,
+  "clienteId": 4
 }

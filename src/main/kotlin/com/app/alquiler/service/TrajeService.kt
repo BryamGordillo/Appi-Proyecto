@@ -57,8 +57,16 @@ class TrajeService {
         }
     }
 
-    fun delete (id:Long): Boolean{
-        trajeRepository.deleteById(id)
-        return true
+    fun delete (id :Long?): Boolean{
+        try{
+            trajeRepository.findById(id)
+                ?: throw Exception ("id no existe")
+            trajeRepository.deleteById(id!!)
+            return true
+
+        }catch (ex:Exception){
+            throw Exception()
+        }
+
     }
 }

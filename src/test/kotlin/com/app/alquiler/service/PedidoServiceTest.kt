@@ -34,21 +34,30 @@ class PedidoServiceTest {
 
         id= 1
         cantidad=1
+        trajeId=1
+        clienteId=4
 
     }
     val newObject: Pedido = Pedido().apply {
 
         id= 1
         cantidad=1
+        trajeId=1
+        clienteId=4
 
     }
 
     @Test
     fun saveIsCorrect(){
+        Mockito.`when`(clienteRepository.findById(pedidoMock.clienteId)).thenReturn(clienteMock)
+        Mockito.`when`(trajeRepository.findById(pedidoMock.trajeId)).thenReturn(trajeMock)
+
         Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
         val response = pedidoService.save(newObject)
         Assertions.assertEquals(response.id, newObject.id)
         Assertions.assertEquals(response.cantidad, newObject.cantidad)
+        Assertions.assertEquals(response.clienteId, newObject.clienteId)
+        Assertions.assertEquals(response.trajeId, newObject.trajeId)
 
     }
     val jsonString = File("./src/test/resources/Pedido/crearPedido.json").readText(Charsets.UTF_8)
@@ -63,10 +72,15 @@ class PedidoServiceTest {
     @Test
     fun savePedido(){
         //Para actualizar
-        Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
-        val response = pedidoService.save(newObject)
-        Assertions.assertEquals(response.id, newObject.id)
-        Assertions.assertEquals(response.cantidad, newObject.cantidad)
+        Mockito.`when`(clienteRepository.findById(pedidoMock.clienteId)).thenReturn(clienteMock)
+        Mockito.`when`(trajeRepository.findById(pedidoMock.trajeId)).thenReturn(trajeMock)
+
+        Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(pedidoMock)
+        val response = pedidoService.save(pedidoMock)
+        Assertions.assertEquals(response.id, pedidoMock.id)
+        Assertions.assertEquals(response.cantidad, pedidoMock.cantidad)
+        Assertions.assertEquals(response.clienteId, pedidoMock.clienteId)
+        Assertions.assertEquals(response.trajeId, pedidoMock.trajeId)
 
     }
 

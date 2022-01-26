@@ -78,8 +78,16 @@ class ClienteService {
         }
     }
 
-    fun delete (id:Long): Boolean{
-        clienteRepository.deleteById(id)
-        return true
+    fun delete (id :Long?): Boolean{
+        try{
+            clienteRepository.findById(id)
+                ?: throw Exception ("id no existe")
+            clienteRepository.deleteById(id!!)
+            return true
+
+        }catch (ex:Exception){
+            throw Exception()
+        }
+
     }
 }
