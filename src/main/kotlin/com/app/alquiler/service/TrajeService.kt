@@ -58,6 +58,15 @@ class TrajeService {
             throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
         }
     }
+    fun validarTraje(categorias: String):Boolean{
+        for (i in listaCategorias){
+            if (categorias == i){
+                return true
+            }
+        }
+        return false
+
+    }
 
     fun delete (id :Long?): Boolean{
         try{
