@@ -92,11 +92,11 @@ class ClienteServiceTest {
     fun updateIsIdClienteCorrect() {
         Mockito.`when`(clienteRepository.findById(returnObject.id)).thenReturn(returnObject)
         Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
-        val response = clienteService.save(clienteMock)
-        Assertions.assertEquals(response.id, clienteMock.id)
-        Assertions.assertEquals(response.cedula, clienteMock.cedula)
-        Assertions.assertEquals(response.nombre, clienteMock.nombre)
-        Assertions.assertEquals(response.celular, clienteMock.celular)
+        val response = clienteService.save(newObject)
+        Assertions.assertEquals(response.id, newObject.id)
+        Assertions.assertEquals(response.cedula, newObject.cedula)
+        Assertions.assertEquals(response.nombre, newObject.nombre)
+        Assertions.assertEquals(response.celular, newObject.celular)
     }
 
     @Test
@@ -105,7 +105,8 @@ class ClienteServiceTest {
         Assertions.assertThrows(Exception::class.java) {
             Mockito.`when`(clienteRepository.findById(returnObject.id)).thenReturn(null)
             Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
-            clienteService.update(clienteMock)
+            val response = clienteService.update(newObject)
+            Assertions.assertEquals(response.id, newObject.id)
 
         }
     }
@@ -113,9 +114,7 @@ class ClienteServiceTest {
     @Test
     fun updateIsFailedCedulaIsNull() {
         Assertions.assertThrows(Exception::class.java) {
-            clienteMock.apply {
-                cedula = " "
-            }
+            clienteMock.apply {cedula = " "}
             Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
             Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
             clienteService.update(clienteMock)
@@ -126,9 +125,7 @@ class ClienteServiceTest {
     @Test
     fun updateIsFailedCelularIsNull() {
         Assertions.assertThrows(Exception::class.java) {
-            clienteMock.apply {
-                celular = " "
-            }
+            clienteMock.apply {celular = " "}
             Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
             Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
             clienteService.update(clienteMock)
@@ -139,13 +136,28 @@ class ClienteServiceTest {
     @Test
     fun updateIsFailedNombreIsNull() {
         Assertions.assertThrows(Exception::class.java) {
-            clienteMock.apply {
-                nombre = " "
-            }
+            clienteMock.apply {nombre = " "}
             Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
             Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
             clienteService.update(clienteMock)
 
+        }
+    }
+
+    @Test
+    fun delete(){
+        Mockito.`when`(clienteRepository.findById(newObject.id)).thenReturn(returnObject)
+        Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
+        val response = clienteService.delete(newObject.id)
+        Assertions.assertEquals(response, true)
+    }
+    @Test
+    fun deleteIsFailed(){
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(clienteRepository.findById(newObject.id)).thenReturn(null)
+            Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(returnObject)
+            val response = clienteService.delete(newObject.id)
+            Assertions.assertEquals(response, true)
         }
     }
 }

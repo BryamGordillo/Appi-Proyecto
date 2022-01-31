@@ -64,6 +64,14 @@ class TrajeServiceTest {
             trajeService.save(trajeMock)
         }
     }
+    @Test
+    fun updateIsIdTrajeCorrect() {
+        Mockito.`when`(trajeRepository.findById(returnObject.id)).thenReturn(returnObject)
+        Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
+        val response = trajeService.save(newObject)
+        Assertions.assertEquals(response.id, newObject.id)
+        Assertions.assertEquals(response.descripcion, newObject.descripcion)
+    }
 
     @Test
     fun updatedIdNotExitsFailed() {
@@ -71,7 +79,8 @@ class TrajeServiceTest {
         Assertions.assertThrows(Exception::class.java) {
             Mockito.`when`(trajeRepository.findById(returnObject.id)).thenReturn(null)
             Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
-            trajeService.update(trajeMock)
+            val response = trajeService.update(newObject)
+            Assertions.assertEquals(response.id, newObject.id)
 
         }
     }
@@ -86,6 +95,24 @@ class TrajeServiceTest {
             Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(trajeMock)
             trajeService.update(trajeMock)
 
+        }
+    }
+
+    @Test
+    fun delete() {
+        Mockito.`when`(trajeRepository.findById(newObject.id)).thenReturn(returnObject)
+        Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
+        val response = trajeService.delete(newObject.id)
+        Assertions.assertEquals(response, true)
+    }
+
+    @Test
+    fun deleteFailed() {
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(trajeRepository.findById(newObject.id)).thenReturn(null)
+            Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
+            val response = trajeService.delete(newObject.id)
+            Assertions.assertEquals(response, true)
         }
     }
 

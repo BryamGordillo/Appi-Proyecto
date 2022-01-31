@@ -92,28 +92,54 @@ class PedidoServiceTest {
             pedidoService.save(pedidoMock)
         }
     }
+    @Test
+    fun updateIsIdPedidoCorrect() {
+        Mockito.`when`(clienteRepository.findById(pedidoMock.clienteId)).thenReturn(clienteMock)
+        Mockito.`when`(trajeRepository.findById(pedidoMock.trajeId)).thenReturn(trajeMock)
 
+        Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(pedidoMock)
+        val response = pedidoService.save(newObject)
+        Assertions.assertEquals(response.id, newObject.id)
+        Assertions.assertEquals(response.cantidad, newObject.cantidad)
+        Assertions.assertEquals(response.clienteId, newObject.clienteId)
+        Assertions.assertEquals(response.trajeId, newObject.trajeId)
+    }
     @Test
     fun updatedIdNotExitsFailed() {
 
         Assertions.assertThrows(Exception::class.java) {
             Mockito.`when`(pedidoRepository.findById(returnObject.id)).thenReturn(null)
             Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
-            pedidoService.update(pedidoMock)
-
+            val response = pedidoService.update(newObject)
+            Assertions.assertEquals(response.id, newObject.id)
         }
     }
 
     @Test
     fun updateIsFailedCantidadIsNull() {
         Assertions.assertThrows(Exception::class.java) {
-            pedidoMock.apply {
-                cantidad = 0
-            }
+            pedidoMock.apply { cantidad = 0 }
             Mockito.`when`(pedidoRepository.findById(pedidoMock.id)).thenReturn(pedidoMock)
             Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(pedidoMock)
             pedidoService.update(pedidoMock)
 
+        }
+    }
+
+    @Test
+    fun delete() {
+        Mockito.`when`(pedidoRepository.findById(newObject.id)).thenReturn(returnObject)
+        Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
+        val response = pedidoService.delete(newObject.id)
+        Assertions.assertEquals(response, true)
+    }
+    @Test
+    fun deleteFailed() {
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(pedidoRepository.findById(newObject.id)).thenReturn(null)
+            Mockito.`when`(pedidoRepository.save(Mockito.any(Pedido::class.java))).thenReturn(returnObject)
+            val response = pedidoService.delete(newObject.id)
+            Assertions.assertEquals(response, true)
         }
     }
 
