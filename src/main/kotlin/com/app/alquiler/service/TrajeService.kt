@@ -58,9 +58,11 @@ class TrajeService {
             throw ResponseStatusException( HttpStatus.NOT_FOUND,ex.message, ex)
         }
     }
-    fun validarTraje(categorias: String):Boolean{
-        for (i in listaCategorias){
-            if (categorias == i){
+    val listatrajes= listOf<String>("pastor","virgen","vaca")
+
+    fun validarTraje(descripcion: String):Boolean{
+        for (i in listatrajes){
+            if (descripcion == i){
                 return true
             }
         }

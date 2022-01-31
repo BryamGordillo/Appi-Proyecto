@@ -70,30 +70,30 @@ class TrajeServiceTestEva {
     }
 
     @Test
-    fun updateTrajeFailedCategoria() {
+    fun updateTrajeFailedDescripcion() {
         Assertions.assertThrows(Exception::class.java) {
             trajeMock.apply {
-                categorias = "    "
+                descripcion = "    "
             }
             Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(trajeMock)
             trajeService.update(trajeMock)
         }
     }
     @Test
-    fun updateTrajePassedListCategoria() {
+    fun updateTrajePassedListDescripcion() {
         Mockito.`when`(trajeRepository.findById(returnObject.id)).thenReturn(returnObject)
         Mockito.`when`(trajeRepository.save(Mockito.any(Traje::class.java))).thenReturn(returnObject)
         val response = trajeService.update(newObject)
         Assertions.assertEquals(response.id, newObject.id)
-        Assertions.assertEquals(response.categorias, newObject.categorias)
+        Assertions.assertEquals(response.descripcion, newObject.descripcion)
 
     }
 
     @Test
-    fun updateProductoFailedListCategoria() {
+    fun updateTrajeFailedListDescripcion() {
         Assertions.assertThrows(Exception::class.java) {
-            trajeService.apply {
-                categorias = " "
+            trajeMock.apply {
+               descripcion  = " "
             }
 
             Mockito.`when`(trajeRepository.findById(returnObject.id)).thenReturn(returnObject)
